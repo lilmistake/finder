@@ -1,9 +1,12 @@
 import 'package:finder/core/models.dart';
 import 'package:flutter/material.dart';
+import 'package:finder/core/crop_and_save.dart';
 
 class PredictionList extends StatelessWidget {
-  const PredictionList({super.key, required this.predictions});
+  const PredictionList(
+      {super.key, required this.predictions, required this.path});
   final List<Prediction> predictions;
+  final String path;
 
   Widget _noPredictionsFound() {
     if (predictions.isNotEmpty) return Container();
@@ -58,30 +61,33 @@ class PredictionList extends StatelessWidget {
             ),
             _noPredictionsFound(),
             ...predictions
-                .map((e) => Container(
-                      padding: const EdgeInsets.all(5),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: e.color),
-                            width: 25,
-                            height: 25,
-                          )),
-                          Expanded(
-                              child: Text(
-                            e.object,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 20),
-                          )),
-                          Expanded(
-                              child: Text(
-                            "${(double.parse(e.confidence.toString()) * 100).floorToDouble().toString()}%",
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 20),
-                          )),
-                        ],
+                .map((e) => InkWell(
+                      onTap: () => cropAndSaveFile(e, path, context),
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle, color: e.color),
+                              width: 25,
+                              height: 25,
+                            )),
+                            Expanded(
+                                child: Text(
+                              e.object,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 20),
+                            )),
+                            Expanded(
+                                child: Text(
+                              "${(double.parse(e.confidence.toString()) * 100).floorToDouble().toString()}%",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 20),
+                            )),
+                          ],
+                        ),
                       ),
                     ))
                 .toList()

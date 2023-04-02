@@ -30,7 +30,7 @@ class _ImagePageState extends State<ImagePage> {
         context: context,
         isDismissible: true,
         builder: (context) {
-          return PredictionList(predictions: predictions);
+          return PredictionList(predictions: predictions, path: widget.path,);
         },
       );
     });
