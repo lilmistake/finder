@@ -15,7 +15,13 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
   /// listens for image capture and navigates
+  bool arButton = false;
   void listenCapture(state) {
+    if (arButton) {
+      // making sure the event wasn't caused by changing aspect ratio
+      arButton = false;
+      return;
+    }
     state.captureState$.listen((event) {
       if (event != null &&
           event.isPicture &&
@@ -52,7 +58,12 @@ class _CameraPageState extends State<CameraPage> {
                   children: [
                     AwesomeFlashButton(state: state),
                     AwesomeAspectRatioButton(
-                        state: PhotoCameraState.from(state.cameraContext)),
+                      state: PhotoCameraState.from(state.cameraContext),
+                      onAspectRatioTap: (sensorConfig, aspectRatio) {
+                        arButton = true;
+                        sensorConfig.switchCameraRatio();
+                      },
+                    ),
                   ],
                 ),
               );
@@ -74,7 +85,7 @@ class _CameraPageState extends State<CameraPage> {
                         onChange: (newZoom) => setState(() {
                               state.sensorConfig.setZoom(newZoom);
                               zoomLevel = newZoom;
-                    })),
+                            })),
                   ],
                 ),
               );
