@@ -18,7 +18,11 @@ class BoundedBox extends StatelessWidget {
       future: predictObjects(file.path),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container();
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Colors.black,
+            ),
+          );
         }
         //predictions made
         setPredictions(snapshot.data!);
@@ -53,6 +57,7 @@ class BoundedBox extends StatelessWidget {
                                       e.object,
                                       style: const TextStyle(
                                         color: Colors.white,
+                                        fontSize: 18,
                                         backgroundColor: Colors.black,
                                       ),
                                     )),
