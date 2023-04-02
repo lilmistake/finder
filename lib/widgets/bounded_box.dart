@@ -15,7 +15,7 @@ class BoundedBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Prediction>>(
-      future: predictObjects(file.path),
+      future: predictObjects(file.path), // loading predictions
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -24,10 +24,11 @@ class BoundedBox extends StatelessWidget {
             ),
           );
         }
-        //predictions made        
+        //predictions made
         List<Prediction> predictions = snapshot.data!;
         return FutureBuilder(
-            future: decodeImageFromList(file.readAsBytesSync()),
+            future: decodeImageFromList(
+                file.readAsBytesSync()), //loading file height width
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Container();
@@ -40,6 +41,7 @@ class BoundedBox extends StatelessWidget {
 
               return Align(
                 child: SizedBox(
+                  // setting height width to add bounding boxes for each precition at right spot
                   width: width,
                   height: height,
                   child: Stack(

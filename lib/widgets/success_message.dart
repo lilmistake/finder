@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+/// Generic success message
 class ImageSaveSuccess extends StatelessWidget {
   const ImageSaveSuccess({super.key});
 

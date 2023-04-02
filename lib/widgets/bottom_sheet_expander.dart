@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+/// Icon to expand bottom sheet which contains the predictions
 class SheetExpander extends StatelessWidget {
   const SheetExpander({super.key, required this.onTap});
   final Function onTap;

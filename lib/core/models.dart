@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Prediction {
   final BoundingBox rect;
-  final double confidence;
+  final double confidence; // between 0 and 1
   final String object;
   Color color;
   Prediction({
@@ -21,6 +21,7 @@ class Prediction {
             Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
 }
 
+/// [height], [widhth], [x], and [y] are between 0 and 1, we later scale them up according to image size
 class BoundingBox {
   final double width;
   final double height;

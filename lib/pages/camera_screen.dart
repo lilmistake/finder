@@ -38,10 +38,12 @@ class _CameraPageState extends State<CameraPage> {
           color: Colors.black,
           child: CameraAwesomeBuilder.awesome(
             aspectRatio: CameraAspectRatios.ratio_1_1,
+            // opens picture previously clicked (visible on right of shutter button)
             onMediaTap: (p0) => {if (p0.isPicture) OpenFile.open(p0.filePath)},
             previewFit: CameraPreviewFit.fitWidth,
             zoom: zoomLevel,
             topActionsBuilder: (state) {
+              // build top bar of camera
               listenCapture(state);
               return Padding(
                 padding: const EdgeInsets.all(15),
@@ -81,10 +83,10 @@ class _CameraPageState extends State<CameraPage> {
                 AwesomeTheme(bottomActionsBackgroundColor: Colors.transparent),
             saveConfig: SaveConfig.photo(
               pathBuilder: () async {
+                //saves to cache directory (android) or NSCaches directory
                 final Directory tempDir = await getTemporaryDirectory();
                 final testDir = await Directory('${tempDir.path}/test')
                     .create(recursive: true);
-
                 return '${testDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
               },
             ),

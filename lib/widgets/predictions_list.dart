@@ -1,7 +1,8 @@
 import 'package:finder/core/models.dart';
 import 'package:flutter/material.dart';
 import 'package:finder/core/crop_and_save.dart';
-
+/// Returns a list of all predictions made with their color codes
+/// Opens interface to crop and save file on clicking on a pridiction
 class PredictionList extends StatelessWidget {
   const PredictionList(
       {super.key, required this.predictions, required this.path});

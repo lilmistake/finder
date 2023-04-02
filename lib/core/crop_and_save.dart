@@ -3,7 +3,13 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'models.dart';
 import 'package:finder/widgets/success_message.dart';
-
+/// This functions opens an interface to crop and edit image.
+/// You can:
+/// 1. Change aspect ratio
+/// 2. Crop Image
+/// 3. Rotate Image
+/// 
+/// Afte that click on check mark to save the selection to local storage.
 cropAndSaveFile(Prediction e, String path, BuildContext context) async {
   CroppedFile? file = await ImageCropper().cropImage(
     sourcePath: path,
