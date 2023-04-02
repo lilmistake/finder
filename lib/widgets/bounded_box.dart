@@ -24,8 +24,7 @@ class BoundedBox extends StatelessWidget {
             ),
           );
         }
-        //predictions made
-        setPredictions(snapshot.data!);
+        //predictions made        
         List<Prediction> predictions = snapshot.data!;
         return FutureBuilder(
             future: decodeImageFromList(file.readAsBytesSync()),
@@ -33,6 +32,7 @@ class BoundedBox extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Container();
               }
+              setPredictions(predictions);
               //image size received
               var width = MediaQuery.of(context).size.width;
               var height =
