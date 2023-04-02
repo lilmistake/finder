@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'camera_screen.dart';
+import 'pages/camera_screen.dart';
 void main() {
   runApp(const MyApp());
 }
