@@ -1,16 +1,25 @@
-# finder
+# Finder
+A mobile application that uses machine learning to detect objects in images.
 
-A new Flutter project.
+## Installation
 
-## Getting Started
+### Prerequisites
 
-This project is a starting point for a Flutter application.
+- Flutter 2.19 or later
 
-A few resources to get you started if this is your first Flutter project:
+### Installation Steps
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Clone this repository using `git clone https://github.com/lilmistake/finder`
+2. Change directory using `cd finder`.
+3. Run `flutter pub get` to install the required dependencies.
+4. Build and run the app using `flutter run`.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Usage
+
+### Object Detection
+
+1. Launch the app and click a picture using shutter button.
+2. Wait for the app to process the image and detect objects.
+3. View the objects detected by the app and their respective confidence scores.
+4. Click on any particular prediction.
+5. Crop the selection and click on ✅ button to save.
