@@ -36,7 +36,6 @@ cropAndSaveFile(Prediction e, String path, BuildContext context) async {
           rectWidth: e.rect.width),
     ],
   );
-  file = null;
   if (file != null) {
     PhotoManager.editor
         .saveImageWithPath(file.path,
