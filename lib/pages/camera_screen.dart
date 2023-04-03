@@ -15,13 +15,7 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
   /// listens for image capture and navigates
-  bool arButton = false;
-  void listenCapture(state) {
-    if (arButton) {
-      // making sure the event wasn't caused by changing aspect ratio
-      arButton = false;
-      return;
-    }
+  void captured(state) {
     state.captureState$.listen((event) {
       if (event != null &&
           event.isPicture &&
@@ -45,12 +39,10 @@ class _CameraPageState extends State<CameraPage> {
           child: CameraAwesomeBuilder.awesome(
             aspectRatio: CameraAspectRatios.ratio_1_1,
             // opens picture previously clicked (visible on right of shutter button)
-            onMediaTap: (p0) => {if (p0.isPicture) OpenFile.open(p0.filePath)},
             previewFit: CameraPreviewFit.fitWidth,
             zoom: zoomLevel,
             topActionsBuilder: (state) {
               // build top bar of camera
-              listenCapture(state);
               return Padding(
                 padding: const EdgeInsets.all(15),
                 child: Row(
@@ -60,10 +52,64 @@ class _CameraPageState extends State<CameraPage> {
                     AwesomeAspectRatioButton(
                       state: PhotoCameraState.from(state.cameraContext),
                       onAspectRatioTap: (sensorConfig, aspectRatio) {
-                        arButton = true;
                         sensorConfig.switchCameraRatio();
                       },
                     ),
+                  ],
+                ),
+              );
+            },
+            bottomActionsBuilder: (state) {
+              return Padding(
+                padding: const EdgeInsets.all(7),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    AwesomeCameraSwitchButton(
+                        state: state,
+                        theme: AwesomeTheme(
+                          buttonTheme:
+                              AwesomeButtonTheme(backgroundColor: Colors.white12),
+                        )),
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withOpacity(0.5),
+                      ),
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(1),
+                      child: InkWell(
+                        onTap: () {
+                          PhotoCameraState.from(state.cameraContext)
+                              .takePhoto()
+                              .then((value) {
+                            captured(state);
+                          });
+                        },
+                        child: const Icon(
+                          Icons.circle,
+                          size: 80,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    StreamBuilder<MediaCapture?>(
+                        stream: state.captureState$,
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const SizedBox(width: 60, height: 60);
+                          }
+                          return SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: AwesomeMediaPreview(
+                              mediaCapture: snapshot.requireData,
+                              onMediaTap: (p0) =>
+                                  {if (p0.isPicture) OpenFile.open(p0.filePath)},
+                            ),
+                          );
+                        })
                   ],
                 ),
               );
