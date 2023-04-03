@@ -63,7 +63,14 @@ class PredictionList extends StatelessWidget {
             _noPredictionsFound(),
             ...predictions
                 .map((e) => InkWell(
-                      onTap: () => cropAndSaveFile(e, path, context),
+                      onTap: () {
+                        Navigator.of(context).push(PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                            return CustomCropper(path: path, prediction: e,);
+                          },
+                        ));
+                      },
                       child: Container(
                         padding: const EdgeInsets.all(5),
                         child: Row(

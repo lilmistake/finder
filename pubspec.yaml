@@ -39,8 +39,8 @@ dependencies:
   better_open_file: ^3.6.4
   path_provider: ^2.0.14
   tflite: ^1.1.2
-  image_cropper: ^3.0.2
   photo_manager: ^2.6.0
+  crop_image: ^1.0.4
 
 dev_dependencies:
   flutter_test:
