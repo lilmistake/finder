@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:better_open_file/better_open_file.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
-import 'package:finder/core/prediction.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'image_page.dart';
@@ -15,12 +14,14 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
   /// listens for image capture and navigates
+  static bool blockCapture = false;
   void captured(state) {
+    if (blockCapture) return;
+    blockCapture = true;
     state.captureState$.listen((event) {
       if (event != null &&
           event.isPicture &&
           event.status == MediaCaptureStatus.success) {
-        predictObjects(event.filePath);
         Navigator.push(context, PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) {
             return ImagePage(path: event.filePath);

@@ -1,26 +1,16 @@
 import 'dart:io';
 import 'package:finder/core/models.dart';
+import 'package:finder/core/prediction.dart';
 import 'package:finder/widgets/predictions_list.dart';
 import 'package:flutter/material.dart';
 import '../widgets/bounded_box.dart';
 import '../widgets/bottom_sheet_expander.dart';
 
-class ImagePage extends StatefulWidget {
+class ImagePage extends StatelessWidget {
   const ImagePage({super.key, required this.path});
   final String path;
-
-  @override
-  State<ImagePage> createState() => _ImagePageState();
-}
-
-class _ImagePageState extends State<ImagePage> {
   static List<Prediction> predictions = [];
 
-  /// setter for predictions list -> used by bottom sheet
-  void setPredictions(List<Prediction> p) {
-    predictions = p;
-    openSheet(context);
-  }
 
   void openSheet(context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -30,7 +20,10 @@ class _ImagePageState extends State<ImagePage> {
         context: context,
         isDismissible: true,
         builder: (context) {
-          return PredictionList(predictions: predictions, path: widget.path,);
+          return PredictionList(
+            predictions: predictions,
+            path: path,
+          );
         },
       );
     });
@@ -38,7 +31,7 @@ class _ImagePageState extends State<ImagePage> {
 
   @override
   Widget build(BuildContext context) {
-    File file = File(widget.path);
+    File file = File(path);
     Image img = Image.file(
       file,
       fit: BoxFit.fitWidth,
@@ -47,14 +40,28 @@ class _ImagePageState extends State<ImagePage> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
-        alignment: Alignment.bottomCenter,
         children: [
           Center(child: img),
-          BoundedBox(
-            file: file,
-            setPredictions: setPredictions,
+          FutureBuilder(
+            future: predictObjects(path),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.black,
+                  ),
+                );
+              }
+              predictions = snapshot.data!;
+              return Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  BoundedBox(file: file, predictions: predictions),
+                  SheetExpander(onTap: () => openSheet(context))
+                ],
+              );
+            },
           ),
-          SheetExpander(onTap: () => openSheet(context))
         ],
       ),
     );
