@@ -37,42 +37,20 @@ class _CustomCropperState extends State<CustomCropper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: CropImage(
-            controller: controller, image: Image.file(File(widget.path))),
-      ),
-      bottomNavigationBar: _BottomNav(controller: controller),
-    );
-  }
-}
-
-/// Shows the bottom nav buttons to procees or cancel selection
-class _BottomNav extends StatelessWidget {
-  const _BottomNav({
-    required this.controller,
-  });
-
-  final CropController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-              color: Colors.white,
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(
-                Icons.close,
-                size: 30,
-              )),
-          _SaveButton(controller: controller)
-        ],
-      ),
-    );
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          title: const Text("Mark selection"),
+          elevation: 0,
+        ),
+        backgroundColor: Colors.black,
+        body: Center(
+          child: CropImage(
+              controller: controller, image: Image.file(File(widget.path))),
+        ),
+        bottomNavigationBar: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [_SaveButton(controller: controller)],
+        ));
   }
 }
 
@@ -93,9 +71,9 @@ class _SaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-        color: Colors.white,
-        onPressed: () async {
+    return InkWell(
+        borderRadius: BorderRadius.circular(999),
+        onTap: () async {
           ByteData? bytes = await getBytes();
           if (bytes == null) return;
           Uint8List img = bytes.buffer.asUint8List();
@@ -125,9 +103,17 @@ class _SaveButton extends StatelessWidget {
             });
           });
         },
-        icon: const Icon(
-          Icons.check,
-          size: 30,
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(999)),
+          width: 150,
+          height: 60,
+          margin: const EdgeInsets.all(20),
+          alignment: Alignment.center,
+          child: const Text(
+            "Save",
+            style: TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
+          ),
         ));
   }
 }
