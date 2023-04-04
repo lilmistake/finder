@@ -53,6 +53,7 @@ class ImagePage extends StatelessWidget {
                 );
               }
               predictions = snapshot.data!;
+              openSheet(context);
               return Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
